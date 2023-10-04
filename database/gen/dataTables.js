@@ -3,8 +3,8 @@
 // Models [Represent for Entities] :
 const Client      = require("../../models/entities/Client.js");
 const Company     = require("../../models/entities/Company.js");
-const Order       = require("../../models/entities/Order.js");
 const Product     = require("../../models/entities/Product.js");
+const Order       = require("../../models/entities/Order.js");
 //------------------------------------------------------------------------------------------
 
 module.exports = new class{
@@ -17,6 +17,8 @@ module.exports = new class{
         });
 
         Company.sync({ force : true });
+        Product.sync({ force: true });
+        Order.sync({ force: true });
         // Generate Datatables:
         /*
         OnOff.sync({ force : true })

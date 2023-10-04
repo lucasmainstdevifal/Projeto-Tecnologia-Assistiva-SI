@@ -20,5 +20,10 @@ module.exports = (app) => {
         res.render("listproducts.ejs"); 
     });
 
+    // List Products
+    app.get("/listproductss", (req, res) => {
+        res.render("listproducts.ejs"); 
+    });
+
 
 }
