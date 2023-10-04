@@ -5,6 +5,11 @@ module.exports = (app) => {
         res.render("index.ejs"); 
     });
 
+    // Home Application  
+    app.get("/login", (req, res) => {
+        res.render("auth.ejs"); 
+    });
+
     // List Products
     app.get("/listproducts", (req, res) => {
         res.render("listproducts.ejs"); 
