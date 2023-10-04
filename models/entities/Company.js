@@ -1,8 +1,7 @@
 const Sequelize  = require("sequelize");
 const connection = require('../../database/databaseConnection.js');
-//const Organ      = require("../Entities/Organ.js");
 
-const User = connection.define('user', {
+const Company = connection.define('company', {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -40,36 +39,6 @@ const User = connection.define('user', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    userType:{
-        type: Sequelize.ENUM,
-        values: ['Admin','Escola','Orgao','User','Secretaria'],
-        allowNull: false
-    },
-    nameSchool:{
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    nameOrgan:{
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    statusAcess:{
-        type: Sequelize.ENUM,
-        values: ['Acesso solicitado' ,'Desativado','Em validação','Ativado'],
-        allowNull: false
-    },
-    resetPasswordToken: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    resetPasswordExpires: {
-        type: Sequelize.DATE,
-        allowNull: true
-    },
-    notificationToken: {
-        type: Sequelize.STRING,
-        allowNull: true
-    }
 },{ 
     freezeTableName: true,
     timestamps: false 
@@ -78,4 +47,4 @@ const User = connection.define('user', {
 // Um User está vinculado a pelo menos 1 Órgão
 // User.belongsTo(Organ, { foreignKey: 'OrganId' });
 
-module.exports = User ;
+module.exports = Company ;

@@ -4,83 +4,159 @@
 	<title>Projeto Assistivo - Mini Mercado IN-casa</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">	
 	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-<!--===============================================================================================-->
+	
+	  
 </head>
 <body style="background-color: #666666;">
 	
+	<audio id="audioPlayer" autoplay>
+		<source src="music/cpfemvozalta.mp3" type="audio/mp3">
+		Seu navegador não suporta a reprodução de áudio.
+	</audio>
+	<audio id="audioPlayerTwo">
+		<source src="music/senhaemvozalta.mp3" type="audio/mp3">
+		Seu navegador não suporta a reprodução de áudio.
+	</audio>
+
+	<script>
+		window.addEventListener('load', function () {
+			iniciarReconhecimentoDeFala();
+		});
+		
+		function reconhecimentoDeFalaSenha() {
+			var audioTwo = document.getElementById('audioPlayerTwo');
+
+			var recognitionz = new webkitSpeechRecognition(); // Use a API Web Speech do Google Chrome
+			recognitionz.lang = 'pt-BR'; // Defina o idioma do reconhecimento de fala, se necessário
+	
+			recognitionz.onresult = function (event) {
+				var resultado = event.results[0][0].transcript;
+				console.log('Você disse: ' + resultado);
+	
+				if (resultado.trim() !== '' && resultado != "agora informe sua senha de quatro dígitos númericos em voz alta") {
+					console.log('Texto detectado. Parando a reprodução do áudio.');
+					console.log('resultado foi:', resultado);
+					var input = document.getElementById('pass');
+        			input.value = resultado;
+					audioTwo.pause();
+					recognitionz.onend = function () {
+						console.log('Reconhecimento de fala encerrado.');		
+						// Submeta o formulário após obter a senha
+						var form = document.getElementById('sendlogin');
+            			form.submit();		
+					};
+				} 
+			};
+	
+			recognitionz.onend = function () {
+				console.log('Reconhecimento de fala reiniciado, por favor informar a senha.');
+				audioTwo.currentTime = 0; // Volte para o início do áudio
+                audioTwo.play();
+                setTimeout(function () {
+                    reconhecimentoDeFalaSenha();
+                }, 4000);
+				
+			};
+	
+			recognitionz.start();
+		}
+		//----------------------------------------------------------
+		function iniciarReconhecimentoDeFala() {
+			var audio    = document.getElementById('audioPlayer');
+			var audioTwo = document.getElementById('audioPlayerTwo');
+
+			var recognition = new webkitSpeechRecognition(); // Use a API Web Speech do Google Chrome
+			recognition.lang = 'pt-BR'; // Defina o idioma do reconhecimento de fala, se necessário
+	
+			recognition.onresult = function (event) {
+				var resultado = event.results[0][0].transcript;
+				console.log('Você disse: ' + resultado);
+	
+				if (resultado.trim() !== '' && resultado != "por favor informe seu CPF em voz alta") {
+					console.log('Texto detectado. Parando a reprodução do áudio.');
+					
+					var input = document.getElementById('cpf');
+        			input.value = resultado;
+					audio.pause();
+					recognition.onend = function () {
+						console.log('Reconhecimento de fala encerrado.Agora vamos para a senha');
+						// Acesse o elemento input pelo seu id
+						var input = document.getElementById('pass');
+						// Dê o foco ao elemento
+						input.focus();
+						audioTwo.play();
+
+						setTimeout(function () {
+							reconhecimentoDeFalaSenha();
+						}, 4000);
+					};
+				} 
+			};
+	
+			recognition.onend = function () {
+				console.log('Reconhecimento de fala reiniciado, por favor informar o cpf.');
+				audio.currentTime = 0; // Volte para o início do áudio
+                audio.play();
+                setTimeout(function () {
+                    iniciarReconhecimentoDeFala();
+                }, 4000);
+			};
+	
+			recognition.start();
+		}
+
+		
+	</script>
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form method="post" action="/listproducts" id="sendlogin" class="login100-form validate-form">
 					<span class="login100-form-title p-b-43">
 						Mini-Mercado In-Casa
 					</span>
 					
 					
 					<div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="cpf">
+						<input class="input100" id="cpf" type="text" name="cpf" autofocus>
 						<span class="focus-input100"></span>
 						<span class="label-input100">CPF</span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input" data-validate="Senha é requeridas">
-						<input class="input100" type="password" name="pass">
+						<input class="input100" id="pass" type="password" name="pass">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Senha</span>
 					</div>
-
-					<div class="flex-sb-m w-full p-t-3 p-b-32">
-						<div class="contact100-form-checkbox">
-							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-							<label class="label-checkbox100" for="ckb1">
-								Remember me
-							</label>
-						</div>
-
-						<div>
-							<a href="#" class="txt1">
-								Esqueceu a senha?
-							</a>
-						</div>
-					</div>
-			
+		
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						<button type="submit" class="login100-form-btn">
 							Entrar
 						</button>
 					</div>
 					
 					<div class="text-center p-t-46 p-b-20">
-						<span class="txt2">
+						<a href="#" class="txt1">
 							Cadastre-se
-						</span>
+						</a>
 					</div>
 				</form>
 
-				<div class="login100-more" style="background-image: url('images/bg-01.jpg');">
+				<div class="login100-more" style="background-image: url('images/homenzinho.png');">
 				</div>
 			</div>
 		</div>

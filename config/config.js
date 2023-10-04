@@ -45,7 +45,7 @@ module.exports = new Promise((resolve, reject) => {
         
         consign({ verbose: false }).include('controllers').into(app)
 
-        dataTables.init()
+        // dataTables.init()
 
         resolve(app);
         console.log("-> Conexão com a base de dados feita com sucesso!");

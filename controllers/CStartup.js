@@ -10,8 +10,13 @@ module.exports = (app) => {
         res.render("auth.ejs"); 
     });
 
+    // Area Company
+    app.get("/login/company", (req, res) => {
+        res.render("authadmin.ejs"); 
+    });
+
     // List Products
-    app.get("/listproducts", (req, res) => {
+    app.post("/listproducts", (req, res) => {
         res.render("listproducts.ejs"); 
     });
 

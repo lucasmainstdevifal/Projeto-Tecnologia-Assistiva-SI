@@ -1,15 +1,22 @@
 /*@@@ Generate datatables in sync succesfuly synced Database */
 //------------------------------------------------------------------------------------------
 // Models [Represent for Entities] :
-const Client             = require("../../models/entities/Client.js");
-const Company          = require("../../models/entities/Company.js");
-const Order             = require("../../models/entities/Order.js");
-const Product              = require("../../models/entities/Product.js");
+const Client      = require("../../models/entities/Client.js");
+const Company     = require("../../models/entities/Company.js");
+const Order       = require("../../models/entities/Order.js");
+const Product     = require("../../models/entities/Product.js");
 //------------------------------------------------------------------------------------------
 
 module.exports = new class{
     init(){
 
+        // Generate Datatables:
+        Client.sync({ force : true })
+        .then(() => {
+            Client.create({cpf: 40,name: 'Lucas',password: 1234});
+        });
+
+        Company.sync({ force : true });
         // Generate Datatables:
         /*
         OnOff.sync({ force : true })
