@@ -27,8 +27,7 @@ module.exports = new Promise((resolve, reject) => {
 
         // Static
         app.use(express.static("public"));
-        app.use(express.static("public/assetsDash"));
-        app.use(express.static("public/assetsLand"));
+        app.use(express.static("public/music"));
         
         // View Engine
         app.set("view engine", "ejs");
